@@ -18,6 +18,10 @@ gem "concurrent-ruby", "1.3.4"
 gem "ruby-openai"
 gem "rspotify"
 
+group :production do
+  gem "pg", "1.3.5"
+end
+
 group :development, :test do
   gem 'reline', '0.5.10'
   gem "debug",   "1.7.1", platforms: %i[ mri mingw x64_mingw ]
