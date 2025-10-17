@@ -1,8 +1,8 @@
  class SongsController < ApplicationController
     require 'rspotify'
-    RSpotify.authenticate(ENV['SPOTIFY_CLIENT_ID'], ENV['SPOTIFY_SECRET_ID'])
   
     def search
+      RSpotify.authenticate(ENV['SPOTIFY_CLIENT_ID'], ENV['SPOTIFY_CLIENT_SECRET'])
       if params[:search_artist].present?
         @searchartists = RSpotify::Artist.search(params[:search_artist])
       end
