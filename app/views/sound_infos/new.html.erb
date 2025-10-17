@@ -1,0 +1,58 @@
+<div class="container hero-container d-flex justify-content-center align-items-center">
+  <div class="center hero-content text-center">
+
+    <!-- 投稿フォーム全体 -->
+    <div id="mood-form-container">
+      <h1 class="hero-title mb-4">Mind Sound</h1>
+      <p class="hero-subtitle mb-4">今、あなたに必要な音楽を。</p>
+
+      <%= form_with url: sound_infos_path, method: :post, html: { id: "mood-form", class: "mood-form" }, local: true do |f| %>
+        <% if flash[:error] %>
+          <div class="alert alert-danger"><%= flash[:error] %></div>
+        <% end %>
+
+        <div class="field mb-2">
+          <%= text_area_tag :emotion_text, nil, placeholder: "今の気持ちを教えてね...", class: "form-control mood-input", rows: 3 %>
+        </div>
+
+        <div class="actions">
+          <%= submit_tag "気持ちを送ってみる", class: "btn mood-btn" %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- ローディング表示 -->
+    <div id="loading" style="display:none; text-align:center; margin-top:20px;">
+      <div class="spinner-border text-success" role="status"></div>
+      <p style="text-align: centerl;">探しているから少し待ってね〜</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("mood-form");
+    const formContainer = document.getElementById("mood-form-container");
+    const loading = document.getElementById("loading");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      // フォームを非表示にしてローディング表示
+      formContainer.style.display = "none";
+      loading.style.display = "block";
+
+      // 5秒後にフォーム送信
+      setTimeout(() => {
+        form.submit();
+      }, 3000);
+    });
+  });
+</script>
+
+
+
+
+
+

@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  content: MyText
+  mood: MyString
+  title: MyString
+  artist: MyString
+  cover_url: MyString
+
+two:
+  content: MyText
+  mood: MyString
+  title: MyString
+  artist: MyString
+  cover_url: MyString

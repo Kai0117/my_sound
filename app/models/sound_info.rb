@@ -1,0 +1,2 @@
+class SoundInfo < ApplicationRecord
+end
