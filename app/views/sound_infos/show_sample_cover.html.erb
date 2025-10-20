@@ -1,0 +1,7 @@
+<!-- app/views/sound_infos/show_sample_cover.html.erb -->
+<h2><%= @title %> - <%= @artist %></h2>
+<% if @cover_url %>
+  <img src="<%= @cover_url %>" alt="Album cover">
+<% else %>
+  <p>画像が取得できませんでした</p>
+<% end %>

@@ -1,29 +1,40 @@
-<div class="container hero-container d-flex justify-content-center align-items-center py-5">
-  <div class="center hero-content text-center w-100" style="max-width:600px;">
+<div class="container hero-container d-flex justify-content-center align-items-center">
+  <div class="center hero-content text-center">
 
-    <h1 class="hero-title mb-4">あなたにおすすめの音楽</h1>
 
-    <div class="card shadow-sm mb-4" style="border-radius:12px; overflow:hidden;">
-      <div class="card-body text-center">
-        <% if @sound_info.title.present? && @sound_info.track_url.present? %>
-          <h2 class="fs-4 fw-bold mb-1">
-            <%= link_to @sound_info.title, @sound_info.track_url, target: "_blank", class: "text-decoration-none text-dark" %>
-          </h2>
-          <p class="text-muted small mt-2">⬆︎ クリックでSpotifyページを開きます</p>
-        <% elsif @sound_info.title.present? %>
-          <h2 class="fs-4 fw-bold mb-1"><%= @sound_info.title %></h2>
-        <% else %>
-          <p class="text-muted">おすすめの曲が見つかりませんでした</p>
-        <% end %>
+<div class="container text-center py-5">
+  <h2 class="hero-title mb-4">これを聴いてね〜</h2>
 
-        <div class="mt-4">
-          <%= link_to "もう一度入力する", new_sound_info_path, class: "btn btn-outline-success" %>
-        </div>
+  <% if @title.present? && @artist.present? %>
+    <p class="fs-4 mb-4">
+      <strong><%= @title %></strong><br>
+      <strong>- <%= @artist %></strong>
+    </p>
+
+    <% if @cover_url.present? %>
+      <div class="mb-4">
+        <%= image_tag @cover_url, alt: "Album Cover", width: 300, class: "img-fluid rounded shadow" %>
       </div>
-    </div>
 
-  </div>
+      <% if @track_url.present? %>
+        <p>
+        <a href="<%= @track_url %>" 
+        target="_blank" 
+        class="modern-spotify-btn">
+       🎧 Spotifyで聴く
+       </a>
+        </p>
+      <% end %>
+    <% else %>
+      <p class="text-muted">ジャケット画像が取得できませんでした</p>
+    <% end %>
+  <% else %>
+    <p class="text-muted">おすすめの曲がまだありません</p>
+  <% end %>
 </div>
+</div>
+</div>
+
 
 
 

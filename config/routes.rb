@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   get 'songs/artist'
   get 'songs/album'
   get 'images/proxy'
+  #get "sound_infos/sample_cover", to: "sound_infos#show_sample_cover"
   resources :sound_infos, only: [:new, :create, :show]
+  
   get "/proxy_image", to: "images#proxy", as: :proxy_image
 
   resources :songs do
