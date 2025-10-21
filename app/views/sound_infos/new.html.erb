@@ -1,52 +1,73 @@
-<div class="container hero-container d-flex justify-content-center align-items-center">
-  <div class="center hero-content text-center">
+<!-- app/views/sound_infos/new.html.erb -->
+<div class="min-h-screen w-full bg-gradient-to-b from-blue-900 via-blue-700 to-blue-900 flex flex-col items-center justify-center px-6 py-12 text-white">
 
-    <!-- 投稿フォーム全体 -->
-    <div id="mood-form-container">
-      <h1 class="hero-title mb-4">Mind Sound</h1>
-      <p class="hero-subtitle mb-4">今、あなたに必要な音楽を。</p>
+  <style>
+    /* ゆらゆらアニメーション */
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-4px) rotate(-1deg); }
+      50% { transform: translateY(2px) rotate(1deg); }
+      75% { transform: translateY(-3px) rotate(0.5deg); }
+    }
 
-      <%= form_with url: sound_infos_path, method: :post, html: { id: "mood-form", class: "mood-form" }, local: true do |f| %>
-        <% if flash[:error] %>
-          <div class="alert alert-danger"><%= flash[:error] %></div>
-        <% end %>
+    .float-text {
+      animation: float 3.5s ease-in-out infinite;
+    }
+  </style>
 
-        <div class="field mb-2">
-          <%= text_area_tag :emotion_text, nil, placeholder: "今の気持ちを教えてね...", class: "form-control mood-input", rows: 3 %>
-        </div>
+  <!-- タイトル -->
+  <div class="text-center mb-12">
+    <h1 class="text-5xl md:text-6xl font-extrabold text-blue-400 drop-shadow-lg tracking-wide float-text">
+      Mind Sound
+    </h1>
+    <p class="text-blue-100 text-lg md:text-xl mt-4">
+      今、あなたの気持ちにぴったりな音楽を見つけます。
+    </p>
+  </div>
 
-        <div class="actions">
-          <%= submit_tag "気持ちを送ってみる", class: "btn mood-btn" %>
+  <!-- フォームカード -->
+  <div class="bg-blue-800/60 backdrop-blur-lg rounded-2xl shadow-2xl p-8 w-full max-w-lg border border-blue-600/50">
+    <%= form_with url: sound_infos_path, method: :post, html: { id: "mood-form" }, local: true do |f| %>
+
+      <% if flash[:error] %>
+        <div class="bg-blue-500/80 text-white rounded-md p-3 mb-4 text-center font-semibold">
+          <%= flash[:error] %>
         </div>
       <% end %>
-    </div>
 
-    <!-- ローディング表示 -->
-    <div id="loading" style="display:none; text-align:center; margin-top:20px;">
-      <div class="spinner-border text-success" role="status"></div>
-      <p style="text-align: centerl; font-size: 30px;">探しているから少し待ってね〜</p>
-    </div>
+      <label for="emotion_text" class="block text-lg font-medium mb-2 text-blue-100">
+        🎧 今の気持ちを教えてね
+      </label>
 
+      <%= text_area_tag :emotion_text, nil,
+            placeholder: "例: ちょっと疲れた… でも前向きになりたい！",
+            class: "w-full p-4 text-white bg-blue-900/70 border border-blue-500/50 rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none resize-none h-32 mb-6 placeholder-blue-300" %>
+
+      <div class="flex justify-center">
+        <%= submit_tag "気持ちを送ってみる",
+              class: "bg-blue-500 hover:bg-blue-400 text-white text-lg font-semibold py-3 px-8 rounded-full shadow-md transition transform hover:scale-105 hover:shadow-blue-300/40" %>
+      </div>
+    <% end %>
   </div>
+
+  <!-- ローディング表示 -->
+  <div id="loading" class="hidden mt-10 text-center">
+    <div class="w-10 h-10 border-4 border-t-transparent border-blue-400 rounded-full animate-spin mx-auto"></div>
+    <p class="mt-4 text-blue-100">音楽を探しています。少し待ってね…</p>
+  </div>
+
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("mood-form");
-    const formContainer = document.getElementById("mood-form-container");
     const loading = document.getElementById("loading");
 
-    form.addEventListener("submit", function(event) {
-      event.preventDefault();
-
-      // フォームを非表示にしてローディング表示
-      formContainer.style.display = "none";
-      loading.style.display = "block";
-
-      // 5秒後にフォーム送信
-      setTimeout(() => {
-        form.submit();
-      }, 3000);
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      form.classList.add("hidden");
+      loading.classList.remove("hidden");
+      setTimeout(() => form.submit(), 3000);
     });
   });
 </script>
