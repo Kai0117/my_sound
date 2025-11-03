@@ -1,75 +1,231 @@
-<!-- app/views/sound_infos/new.html.erb -->
-<div class="min-h-screen w-full bg-gradient-to-b from-blue-900 via-blue-700 to-blue-900 flex flex-col items-center justify-center px-6 py-12 text-white">
+<div class="min-h-screen bg-gradient-to-br from-slate-800 to-slate-900 text-white flex flex-col items-center justify-center space-y-8 px-4">
 
-  <style>
-    /* ゆらゆらアニメーション */
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      25% { transform: translateY(-4px) rotate(-1deg); }
-      50% { transform: translateY(2px) rotate(1deg); }
-      75% { transform: translateY(-3px) rotate(0.5deg); }
-    }
+  <!-- 🌊 タイトル -->
+  <h1 class="text-4xl font-bold mb-6 float-title">Blue box</h1>
 
-    .float-text {
-      animation: float 3.5s ease-in-out infinite;
-    }
-  </style>
-
-  <!-- タイトル -->
-  <div class="text-center mb-12">
-    <h1 class="text-5xl md:text-6xl font-extrabold text-blue-400 drop-shadow-lg tracking-wide float-text">
-      Mind Sound
-    </h1>
-    <p class="text-blue-100 text-lg md:text-xl mt-4">
-      今、あなたの気持ちにぴったりな音楽を見つけます。
-    </p>
+  <!-- 🔁 モード切り替えスイッチ -->
+  <div class="flex items-center space-x-3">
+    <span class="text-sm text-gray-300">テキストモード</span>
+    <label class="relative inline-flex items-center cursor-pointer">
+      <input type="checkbox" id="mode-toggle" class="sr-only peer">
+      <div class="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+    </label>
+    <span class="text-sm text-gray-300">直感モード</span>
   </div>
 
-  <!-- フォームカード -->
-  <div class="bg-blue-800/60 backdrop-blur-lg rounded-2xl shadow-2xl p-8 w-full max-w-lg border border-blue-600/50">
-    <%= form_with url: sound_infos_path, method: :post, html: { id: "mood-form" }, local: true do |f| %>
+  <!-- ✏️ テキスト検索フォーム -->
+  <div id="text-search" class="flex flex-col items-center space-y-4 w-full max-w-md">
+    <form action="<%= sound_infos_path %>" method="post" class="w-full">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <textarea
+        name="emotion_text"
+        placeholder="例: ちょっと疲れた…テンション落としたい…"
+        rows="4"
+        class="w-full p-4 rounded-2xl text-white bg-blue-900/80 border border-blue-500/50 shadow-md focus:ring-2 focus:ring-blue-400 focus:outline-none resize-none transition placeholder-blue-300 text-lg"
+      ></textarea>
+      <button
+        type="submit"
+        class="mt-4 w-full bg-blue-500 hover:bg-blue-400 text-white font-semibold py-3 px-6 rounded-full shadow-md transition transform hover:scale-105 hover:shadow-blue-300/40">
+        Search
+      </button>
+    </form>
+  </div>
 
-      <% if flash[:error] %>
-        <div class="bg-blue-500/80 text-white rounded-md p-3 mb-4 text-center font-semibold">
-          <%= flash[:error] %>
+  <!-- ✅ テキスト検索ローディング -->
+  <div id="loading-text" class="hidden text-center mt-6">
+    <p class="text-lg font-semibold text-blue-100">検索中です…🎧</p>
+    <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 mx-auto mt-4"></div>
+  </div>
+
+  <!-- 🎨 直感検索 -->
+  <div id="intuitive-search" class="hidden flex flex-col items-center space-y-6">
+
+    <!-- 🧭 4象限マップ -->
+    <div class="relative w-80 h-80" id="mood-map">
+      <!-- 縦横線 -->
+      <div class="absolute inset-0 flex">
+        <div class="w-1/2 border-r border-white/30"></div>
+        <div class="w-1/2"></div>
+      </div>
+      <div class="absolute inset-0 flex flex-col">
+        <div class="h-1/2 border-b border-white/30"></div>
+        <div class="h-1/2"></div>
+      </div>
+
+      <!-- ラベル -->
+      <div class="absolute top-2 left-3 text-sm text-white/60">Calm</div>
+      <div class="absolute top-2 right-3 text-sm text-white/60">Happy</div>
+      <div class="absolute bottom-2 left-3 text-sm text-white/60">Sad</div>
+      <div class="absolute bottom-2 right-3 text-sm text-white/60">Energetic</div>
+
+      <!-- ポインタ -->
+      <div id="mood-pointer"
+           class="pointer-events-none absolute w-4 h-4 bg-white rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-sm"></div>
+    </div>
+
+    <!-- ✨ ジャンル選択カード -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
+      <% ["Pop", "Rock", "Jazz", "Hip-hop", "Classical", "Electronic"].each do |genre| %>
+        <div
+          class="genre-card bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-3 w-32 text-center cursor-pointer transition hover:bg-white/20 hover:scale-105"
+          data-genre="<%= genre.downcase %>">
+          <span class="text-white font-medium"><%= genre %></span>
         </div>
       <% end %>
+    </div>
 
-      <label for="emotion_text" class="block text-lg font-medium mb-2 text-blue-100">
-        🎧 今の気持ちを教えてね
-      </label>
-
-      <%= text_area_tag :emotion_text, nil,
-            placeholder: "例: ちょっと疲れた… でも前向きになりたい！",
-            class: "w-full p-4 text-white bg-blue-900/70 border border-blue-500/50 rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none resize-none h-32 mb-6 placeholder-blue-300" %>
-
-      <div class="flex justify-center">
-        <%= submit_tag "気持ちを送ってみる",
-              class: "bg-blue-500 hover:bg-blue-400 text-white text-lg font-semibold py-3 px-8 rounded-full shadow-md transition transform hover:scale-105 hover:shadow-blue-300/40" %>
-      </div>
-    <% end %>
+    <!-- hidden inputs -->
+    <form id="mood-form" action="<%= sound_infos_path %>" method="post" class="mt-3">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <input type="hidden" name="selected_mood" id="selected-mood">
+      <input type="hidden" name="selected_genres[]" id="selected-genres">
+      <button
+        type="submit"
+        class="bg-blue-500 hover:bg-blue-400 text-white font-semibold py-2 px-6 rounded-full shadow-md transition">
+        Search
+      </button>
+    </form>
   </div>
 
-  <!-- ローディング表示 -->
-  <div id="loading" class="hidden mt-10 text-center">
+  <!-- ✅ 直感モードローディング -->
+  <div id="loading-mood" class="hidden mt-10 text-center">
     <div class="w-10 h-10 border-4 border-t-transparent border-blue-400 rounded-full animate-spin mx-auto"></div>
     <p class="mt-4 text-blue-100">音楽を探しています。少し待ってね…</p>
   </div>
 
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("mood-form");
-    const loading = document.getElementById("loading");
+<!-- 🌊 タイトルアニメーション -->
+<style>
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-4px) rotate(-1deg); }
+  50% { transform: translateY(2px) rotate(1deg); }
+  75% { transform: translateY(-3px) rotate(0.5deg); }
+}
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      form.classList.add("hidden");
-      loading.classList.remove("hidden");
-      setTimeout(() => form.submit(), 3000);
+.float-title {
+  display: inline-block;
+  animation: float 3s ease-in-out infinite;
+  text-shadow: 0 0 8px rgba(59,130,246,0.4);
+}
+</style>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => { 
+  // DOM要素取得
+  const toggle = document.getElementById("mode-toggle");
+  const textSearch = document.getElementById("text-search");
+  const intuitiveSearch = document.getElementById("intuitive-search");
+  const map = document.getElementById("mood-map");
+  const pointer = document.getElementById("mood-pointer");
+  const moodInput = document.getElementById("selected-mood");
+  const genresInput = document.getElementById("selected-genres");
+  const genreCards = document.querySelectorAll(".genre-card");
+  const selectedGenres = new Set();
+  const textForm = textSearch?.querySelector("form");
+  const moodForm = document.getElementById("mood-form");
+  const loadingText = document.getElementById("loading-text");
+  const loadingMood = document.getElementById("loading-mood");
+
+  // 🔍 エラーチェック（すべて存在するか）
+  if (!toggle || !textSearch || !intuitiveSearch || !map || !pointer || !moodInput || !genresInput || !textForm || !moodForm) {
+    console.warn("Some elements are missing in the DOM!");
+    return;
+  }
+
+  // 初期ポインタ位置
+  const cx = map.clientWidth / 2;
+  const cy = map.clientHeight / 2;
+  updatePointer(cx, cy);
+
+  // モード切替
+  toggle.addEventListener("change", () => {
+    textSearch.classList.toggle("hidden", toggle.checked);
+    intuitiveSearch.classList.toggle("hidden", !toggle.checked);
+  });
+
+  // 4象限マップのムード判定
+  function getMood(xRatio, yRatio) {
+    if (xRatio < 0.5 && yRatio < 0.5) return "calm";
+    if (xRatio >= 0.5 && yRatio < 0.5) return "happy";
+    if (xRatio < 0.5 && yRatio >= 0.5) return "sad";
+    return "energetic";
+  }
+
+  // ポインタ移動更新
+  function updatePointer(x, y) {
+    pointer.style.left = `${x}px`;
+    pointer.style.top = `${y}px`;
+    const xRatio = x / map.clientWidth;
+    const yRatio = y / map.clientHeight;
+    const mood = getMood(xRatio, yRatio);
+    moodInput.value = mood;
+
+    pointer.style.background = mood === "calm" ? "#cfe8ff" :
+                               mood === "happy" ? "#dfffe0" :
+                               mood === "sad" ? "#e9ddff" : "#fff4c2";
+  }
+
+  // マウス・タッチ操作
+  let isDragging = false;
+  function handleMove(e) {
+    e.preventDefault();
+    const rect = map.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const x = Math.min(Math.max(0, clientX - rect.left), rect.width);
+    const y = Math.min(Math.max(0, clientY - rect.top), rect.height);
+    updatePointer(x, y);
+  }
+  map.addEventListener("mousedown", e => { isDragging = true; handleMove(e); });
+  window.addEventListener("mouseup", () => { isDragging = false; });
+  map.addEventListener("mousemove", e => { if (isDragging) handleMove(e); });
+  map.addEventListener("click", handleMove);
+
+  map.addEventListener("touchstart", e => { isDragging = true; handleMove(e); }, { passive: false });
+  map.addEventListener("touchmove", e => { if (isDragging) handleMove(e); }, { passive: false });
+  window.addEventListener("touchend", () => { isDragging = false; });
+
+  // ジャンル選択
+  genreCards.forEach(card => {
+    card.addEventListener("click", () => {
+      const genre = card.dataset.genre;
+      if (selectedGenres.has(genre)) {
+        selectedGenres.delete(genre);
+        card.classList.remove("ring-2", "ring-blue-400", "bg-white/20", "scale-105");
+      } else {
+        selectedGenres.add(genre);
+        card.classList.add("ring-2", "ring-blue-400", "bg-white/20", "scale-105");
+      }
+      genresInput.value = Array.from(selectedGenres);
     });
   });
+
+
+  function showLoading(formType) {
+    if (formType === "text") {
+      textSearch.classList.add("hidden");
+      loadingText.classList.remove("hidden");
+    } else if (formType === "mood") {
+      intuitiveSearch.classList.add("hidden");
+      loadingMood.classList.remove("hidden");
+    }
+  }
+
+  textForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    showLoading("text");
+    setTimeout(() => textForm.submit(), 1000);
+  });
+
+  moodForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    showLoading("mood");
+    setTimeout(() => moodForm.submit(), 1000);
+  });
+});
 </script>
 
 
