@@ -1,7 +1,7 @@
 class SpotifySearcher
   BASE_URL = "https://api.spotify.com/v1"
 
-  require "net/http"
+require "net/http"
 require "uri"
 require "json"
 require "base64"

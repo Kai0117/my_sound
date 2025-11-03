@@ -5,9 +5,15 @@ class SoundInfosController < ApplicationController
   # ユーザーが投稿した感情を受け取り、曲を提案
   def create
     emotion_text = params[:emotion_text]
+    selected_mood   = params[:selected_mood] 
+    selected_genres = params[:selected_genres] || []
   
     # ① OpenAIで曲名・アーティストを生成
-    suggestion = MusicRecommender.call(emotion_text)
+    suggestion = MusicRecommender.call(
+    emotion_text: params[:emotion_text],
+    mood: params[:selected_mood],
+    genres: params[:selected_genres] || []
+  )
     if suggestion.nil?
       flash.now[:error] = "音楽の提案に失敗しました。"
       return render :new, status: :unprocessable_entity
