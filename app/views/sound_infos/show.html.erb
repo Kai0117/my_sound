@@ -1,65 +1,65 @@
 <body class="bg-gradient-to-br from-slate-800 to-slate-900 text-white min-h-screen flex flex-col items-center justify-center px-4">
-  <main class="flex flex-col items-center justify-center min-h-screen w-full space-y-8">
+  <main class="flex flex-col items-center justify-center min-h-screen w-full space-y-8 px-4">
 
-<!-- app/views/sound_infos/show.html.erb -->
-<div class="bg-gradient-to-br from-slate-800 to-slate-900 text-white min-h-screen flex flex-col items-center justify-center px-4">
+    <style>
+      /* ゆらゆらタイトルアニメーション */
+      @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        25% { transform: translateY(-4px) rotate(-1deg); }
+        50% { transform: translateY(2px) rotate(1deg); }
+        75% { transform: translateY(-3px) rotate(0.5deg); }
+      }
+      .float-text {
+        animation: float 3.5s ease-in-out infinite;
+      }
+    </style>
 
-  <style>
-    /* ゆらゆらタイトルアニメーション */
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      25% { transform: translateY(-4px) rotate(-1deg); }
-      50% { transform: translateY(2px) rotate(1deg); }
-      75% { transform: translateY(-3px) rotate(0.5deg); }
-    }
-    .float-text {
-      animation: float 3.5s ease-in-out infinite;
-    }
-  </style>
-
-  <!-- タイトル -->
-  <div class="text-center mb-10">
-    <h1 class="text-5xl md:text-6xl font-extrabold text-blue-400 drop-shadow-lg tracking-wide float-text">
-      あなたにおすすめの音楽
-    </h1>
-    <p class="text-blue-200 text-lg mt-4">
-      今の気持ちにぴったりな一曲が見つかりました。
-    </p>
-  </div>
-
-  <!-- 曲情報カード -->
-  <div class="bg-blue-800/70 backdrop-blur-lg rounded-2xl shadow-2xl p-8 w-full max-w-md border border-blue-600/50 text-center">
-
-    <% if @title.present? && @track_url.present? %>
-      <h2 class="text-2xl md:text-3xl font-bold mb-2 text-white">
-        <%= link_to @title, @track_url, target: "_blank", class: "hover:text-blue-300 transition" %>
-      </h2>
-    <% elsif @title.present? %>
-      <h2 class="text-2xl md:text-3xl font-bold mb-4 text-white"><%= @title %></h2>
-    <% else %>
-      <p class="text-blue-200 mb-6">おすすめの曲が見つかりませんでした。</p>
-    <% end %>
-
-    <% if @cover_url.present? %>
-      <div class="flex justify-center mb-6">
-        <%= image_tag @cover_url, alt: "Album Cover", class: "rounded-xl shadow-lg w-64 h-64 object-cover" %>
-      </div>
-    <% end %>
-
-    <% if @track_url.present? %>
-      <a href="<%= @track_url %>" target="_blank"
-         class="inline-block bg-blue-500 hover:bg-blue-400 text-white text-lg font-semibold py-3 px-8 rounded-full shadow-md transition transform hover:scale-105 hover:shadow-blue-300/40">
-        🎧 Spotifyで聴く
-      </a>
-    <% end %>
-
-    <div class="mt-8">
-      <%= link_to "もう一度入力する", new_sound_info_path,
-            class: "inline-block bg-transparent border border-blue-400 text-blue-300 hover:bg-blue-500/30 hover:text-white text-sm font-semibold py-2 px-6 rounded-full transition" %>
+    <!-- タイトル -->
+    <div class="text-center mb-10">
+      <h1 class="text-5xl md:text-6xl font-extrabold text-blue-400 drop-shadow-lg tracking-wide float-text">
+        あなたにおすすめの音楽
+      </h1>
+      <p class="text-blue-200 text-lg mt-4">
+        今の気持ちにぴったりな一曲が見つかりました。
+      </p>
     </div>
 
-  </div>
-</div>
+    <!-- 曲情報カード -->
+    <div class="bg-transparent backdrop-blur-lg rounded-2xl shadow-2xl p-8 w-full max-w-md border border-blue-600/30 text-center">
+
+      <% if @title.present? && @track_url.present? %>
+        <h2 class="text-2xl md:text-3xl font-bold mb-2 text-white">
+          <%= link_to @title, @track_url, target: "_blank", class: "hover:text-blue-300 transition" %>
+        </h2>
+      <% elsif @title.present? %>
+        <h2 class="text-2xl md:text-3xl font-bold mb-4 text-white"><%= @title %></h2>
+      <% else %>
+        <p class="text-blue-200 mb-6">おすすめの曲が見つかりませんでした。</p>
+      <% end %>
+
+      <% if @cover_url.present? %>
+        <div class="flex justify-center mb-6">
+          <%= image_tag @cover_url, alt: "Album Cover", class: "rounded-xl shadow-lg w-64 h-64 object-cover" %>
+        </div>
+      <% end %>
+
+      <% if @track_url.present? %>
+        <a href="<%= @track_url %>" target="_blank"
+           class="inline-block bg-blue-500 hover:bg-blue-400 text-white text-lg font-semibold py-3 px-8 rounded-full shadow-md transition transform hover:scale-105 hover:shadow-blue-300/40">
+          🎧 Spotifyで聴く
+        </a>
+      <% end %>
+
+      <div class="mt-8">
+        <%= link_to "もう一度入力する", new_sound_info_path,
+              class: "inline-block bg-transparent border border-blue-400 text-blue-300 hover:bg-blue-500/30 hover:text-white text-sm font-semibold py-2 px-6 rounded-full transition" %>
+      </div>
+
+    </div>
+
+  </main>
+</body>
+
 
 
 
