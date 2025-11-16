@@ -1,10 +1,10 @@
 <body class="bg-gradient-to-br from-slate-800 to-slate-900 text-white min-h-screen flex flex-col items-center justify-center px-4">
   <main class="flex flex-col items-center justify-center min-h-screen w-full space-y-8">
 
-    <!-- 🌊 タイトル -->
+    <!-- タイトル -->
     <h1 class="text-4xl font-bold mb-6 float-title">Mind Sound</h1>
 
-    <!-- 🔁 モード切り替えスイッチ -->
+    <!-- モード切り替えスイッチ -->
     <div class="flex items-center space-x-3">
       <span class="text-sm text-gray-300">テキストモード</span>
       <label class="relative inline-flex items-center cursor-pointer">
@@ -17,7 +17,7 @@
       <span class="text-sm text-gray-300">直感モード</span>
     </div>
 
-    <!-- ✏️ テキスト検索フォーム -->
+    <!-- テキスト検索フォーム -->
     <div id="text-search" class="flex flex-col items-center space-y-4 w-full max-w-md">
       <form action="<%= sound_infos_path %>" method="post" class="w-full">
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
@@ -35,16 +35,16 @@
       </form>
     </div>
 
-    <!-- ✅ テキスト検索ローディング -->
+    <!-- テキスト検索ローディング -->
     <div id="loading-text" class="hidden text-center mt-6">
       <p class="text-lg font-semibold text-blue-100">検索中です…🎧</p>
       <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 mx-auto mt-4"></div>
     </div>
 
-    <!-- 🎨 直感検索 -->
+    <!-- 直感検索 -->
     <div id="intuitive-search" class="hidden flex flex-col items-center space-y-6">
 
-      <!-- 🧭 4象限マップ -->
+      <!-- 象限マップ -->
       <div class="relative w-80 h-80" id="mood-map">
         <!-- 縦横線 -->
         <div class="absolute inset-0 flex">
@@ -67,7 +67,7 @@
              class="pointer-events-none absolute w-4 h-4 bg-white rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-sm"></div>
       </div>
 
-      <!-- ✨ ジャンル選択カード -->
+      <!-- ジャンル選択カード -->
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4 w-full max-w-md">
         <% ["Pop", "Rock", "Jazz", "Hip-hop", "Classical", "Electronic"].each do |genre| %>
           <div
@@ -91,7 +91,7 @@
       </form>
     </div>
 
-    <!-- ✅ 直感モードローディング -->
+    <!-- 直感モードローディング -->
     <div id="loading-mood" class="hidden mt-10 text-center">
       <div class="w-10 h-10 border-4 border-t-transparent border-blue-400 rounded-full animate-spin mx-auto"></div>
       <p class="mt-4 text-blue-100">音楽を探しています。少し待ってね…</p>
@@ -101,7 +101,7 @@
 </body>
 
 
-<!-- 🌊 タイトルアニメーション -->
+<!-- タイトルアニメーション -->
 <style>
 @keyframes float {
   0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loadingText = document.getElementById("loading-text");
   const loadingMood = document.getElementById("loading-mood");
 
-  // 🔍 エラーチェック（すべて存在するか）
+  // エラーチェック（すべて存在するか）
   if (!toggle || !textSearch || !intuitiveSearch || !map || !pointer || !moodInput || !genresInput || !textForm || !moodForm) {
     console.warn("Some elements are missing in the DOM!");
     return;
