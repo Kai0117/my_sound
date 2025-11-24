@@ -20,6 +20,8 @@ gem "rspotify"
 gem "tailwindcss-rails", "~> 4.3"
 gem "tailwindcss-ruby", "~> 4.1"
 gem "devise"
+gem "shakapacker"
+gem "react-rails"
 
 group :production do
   gem "pg", "1.3.5"
@@ -29,6 +31,7 @@ group :development, :test do
   gem 'reline', '0.5.10'
   gem "debug",   "1.7.1", platforms: %i[ mri mingw x64_mingw ]
   gem "dotenv-rails"
+  gem "rspec-rails"
 end
 
 group :development do
@@ -37,6 +40,7 @@ group :development do
   gem "irb",                 "1.10.0"
   gem "repl_type_completor", "0.1.10"
   gem "rails-erd"
+  gem 'factory_bot_rails'
 end
 
 group :test do
