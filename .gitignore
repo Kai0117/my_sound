@@ -37,6 +37,8 @@
 # Ignore environment variables file
 .env
 
+/node_modules
+
 /app/assets/builds/*
 !/app/assets/builds/.keep
 
