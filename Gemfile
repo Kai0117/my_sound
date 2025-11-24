@@ -19,6 +19,7 @@ gem "ruby-openai"
 gem "rspotify"
 gem "tailwindcss-rails", "~> 4.3"
 gem "tailwindcss-ruby", "~> 4.1"
+gem "devise"
 
 group :production do
   gem "pg", "1.3.5"
@@ -35,6 +36,7 @@ group :development do
   gem "solargraph",          "0.56.2"
   gem "irb",                 "1.10.0"
   gem "repl_type_completor", "0.1.10"
+  gem "rails-erd"
 end
 
 group :test do

@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_10_17_030032) do
+ActiveRecord::Schema[7.0].define(version: 2025_11_24_031923) do
+  create_table "favorite_sounds", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "sound_info_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sound_info_id"], name: "index_favorite_sounds_on_sound_info_id"
+    t.index ["user_id"], name: "index_favorite_sounds_on_user_id"
+  end
+
   create_table "sound_infos", force: :cascade do |t|
     t.text "content"
     t.string "mood"
@@ -22,4 +31,18 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_17_030032) do
     t.string "track_url"
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  add_foreign_key "favorite_sounds", "sound_infos"
+  add_foreign_key "favorite_sounds", "users"
 end

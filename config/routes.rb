@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   get 'songs/search'
   get 'songs/show'
   get 'songs/artist'
