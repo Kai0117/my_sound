@@ -6,4 +6,16 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
+
+  attribute :name, :string
+  attribute :age,  :integer
+
+  
+   def greet
+     if age <= 12
+      "ぼくは#{name}だよ。"
+     else
+      "僕は#{name}です。"
+     end
+   end
 end
