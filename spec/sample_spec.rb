@@ -10,14 +10,16 @@ end
 
 RSpec.describe User do
   describe "#greet" do
-    it '12歳以下の場合、ひらがなで答えること' do
+  context '12歳以下の場合'
+    it 'ひらがなで答えること' do
       user = User.new
       user.name = 'たろう'
       user.age  = 12
       expect(user.greet).to eq 'ぼくはたろうだよ。'
     end
-
-    it '13歳以上の場合、漢字で答えること' do
+  end
+    context '13歳以上の場合' do
+    it '漢字で答えること' do
       user = User.new
       user.name = 'たろう'
       user.age  = 13
