@@ -42,6 +42,17 @@ RSpec.describe User do
     end
   end
 
+  #sample_code
+
+  it 'エラーなく予報をツイートすること' do
+    twitter_client_mock = double('Twitter client')
+    allow(twitter_client_mock).to receive(:update)
+  
+    weather_bot = Weatherbot.new
+    allow(weather_bot).to receive(:twitter_client).and_return(twitter_client_mock)
+  
+    expect{ weather_bot.tweet_forecast }.not_to raise_error
+  end
 
 
    
