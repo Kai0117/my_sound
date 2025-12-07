@@ -1,5 +1,7 @@
 require 'rails_helper'
 
+#sample
+
 RSpec.describe "SoundInfos", type: :request do
   describe "URLテスト" do
     it "returns http success" do
