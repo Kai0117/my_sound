@@ -2,6 +2,9 @@ class SoundInfosController < ApplicationController
   
   require "openai"
 
+  def new
+    @sound_info = SoundInfo.new
+  end
   # ユーザーが投稿した感情を受け取り、曲を提案
   def create
     emotion_text = params[:emotion_text]
