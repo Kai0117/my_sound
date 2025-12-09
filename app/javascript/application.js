@@ -2,6 +2,9 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import "./loading"
+import ReactRailsUJS from "react_ujs";
+const componentRequireContext = require.context("components", true);
+ReactRailsUJS.useContext(componentRequireContext);
 
 // app/javascript/loading.js など
 document.addEventListener("DOMContentLoaded", () => {
