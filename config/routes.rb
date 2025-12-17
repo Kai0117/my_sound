@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
+  root "sound_infos#new"
+  get 'sessions/confirm'
   devise_for :users
+  get "logout", to: "sessions#confirm"
   get 'songs/search'
   get 'songs/show'
   get 'songs/artist'
