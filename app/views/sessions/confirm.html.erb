@@ -1,0 +1,9 @@
+<!-- app/views/sessions/confirm.html.erb -->
+<h1>ログアウトしますか？</h1>
+
+<%= button_to "ログアウト",
+              destroy_user_session_path,
+              method: :delete,
+              data: { turbo_confirm: "本当にログアウトしますか？" } %>
+
+<%= link_to "キャンセル", root_path %>
