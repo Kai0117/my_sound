@@ -1,4 +1,13 @@
-<div>
-  <h1 class="font-bold text-4xl">StaticPages#top</h1>
-  <p>サービス紹介ページ</p>
+<div class="flex flex-col items-center justify-center min-h-screen px-4">
+  <h1 class="font-bold text-4xl mb-4">StaticPages#top</h1>
+  <p class="mb-6">サービス紹介ページ</p>
+
+  <div class="h-52 w-full max-w-md bg-blue-500 flex items-center justify-center rounded-md">
+    <%= react_component("HelloText", { text: "テスト文字列" }) %>
+  </div>
 </div>
+
+<div id="hello-text" class="h-52 w-full bg-blue-500 flex items-center justify-center rounded-md">
+  <!-- React がここに描画されます -->
+</div>
+
